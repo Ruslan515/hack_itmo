@@ -11,8 +11,49 @@
 
 import pandas as pd
 from predict import predict_X
+import nltk
+import pymorphy2
+from nltk.corpus import stopwords
+
+stop_words = set(stopwords.words('russian'))
+
+def lemmatized(text):
+    # нормализация текста: приведение к нижнему регистру, удаление различных символов
+    text = text.lower()
+    text = text.replace(',', ' ')
+    text = text.replace('.', ' ')
+    text = text.replace('-', ' ')
+    text = text.replace(';', ' ')
+    text = text.replace(':', ' ')
+    text = text.replace('(', ' ')
+    text = text.replace(')', ' ')
+    text = text.replace('}', ' ')
+    text = text.replace('{', ' ')
+    text = text.replace('<', ' ')
+    text = text.replace('>', ' ')
+
+    text = text.replace('!', ' ')
+    text = text.replace(r'\d+', ' ')
+    text = text.replace(r'[\W]+', ' ')
+
+    return text
+
+
+# приведение токенов входящих в текст к нормальной форме
+def norm(text):
+    morph = pymorphy2.MorphAnalyzer()
+    text_norm = ''
+    for token in nltk.word_tokenize(text):
+        # print('token = ', token)
+        token_norm = morph.parse(token)[0].normal_form
+        if token_norm not in stop_words:
+            text_norm = text_norm + ' ' + token_norm
+        # print('text_norm', text_norm)
+    return text_norm
 
 def text_clear(text):
+    text = lemmatized(text)
+    text = norm(text)
     return text
 
 def main_clear(data_json):        
