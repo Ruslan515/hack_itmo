@@ -29,8 +29,6 @@ def predict():
             if json_["event_type"] == "toxic_or_not":
                 response = main_predict(json_)
                 code = 200
-                print(f"code == {code}")
-        print(4)
         return response, code
 
 if __name__ == '__main__':
