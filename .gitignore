@@ -1,5 +1,7 @@
 hack_ml/catboost_info
 hack_ml/hack_model
+hack_ml/hack_model_russian
+hack_ml/hack_model_toxic
 hack_ml/.ipynb_checkpoints
 data/*
 api/__pycache__
